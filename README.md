@@ -185,12 +185,20 @@ flutter test
 
 ## Screenshots
 
-*Add screenshots here showing:*
-- User list screen with search
-- User detail screen
-- Loading states
-- Error states
-- Offline mode
+### User List Screen
+<img src="https://github.com/absiddik7/user_profile_demo_app/blob/c3cbba4014b3122242b173308bf4f2cff2a52b67/app_screenshot_1.jpeg" alt="User List Screen" width="300">
+
+### User Detail Screen
+<img src="https://github.com/absiddik7/user_profile_demo_app/blob/c3cbba4014b3122242b173308bf4f2cff2a52b67/app_screenshot_2.jpeg" alt="User Detail Screen" width="300">
+
+### Search Functionality
+<img src="https://github.com/absiddik7/user_profile_demo_app/blob/c3cbba4014b3122242b173308bf4f2cff2a52b67/app_screenshot_3.jpeg" alt="Search Functionality" width="300">
+
+### Cached States
+<img src="https://github.com/absiddik7/user_profile_demo_app/blob/c3cbba4014b3122242b173308bf4f2cff2a52b67/app_screenshot_4.jpeg" alt="Cached States" width="300">
+
+### Error Handling
+<img src="https://github.com/absiddik7/user_profile_demo_app/blob/c3cbba4014b3122242b173308bf4f2cff2a52b67/app_screenshot_5.jpeg" alt="Error Handling" width="300">
 
 ## Configuration
 
