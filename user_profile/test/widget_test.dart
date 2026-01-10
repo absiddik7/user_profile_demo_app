@@ -5,26 +5,54 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:user_profile/main.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:user_profile/core/services/cache_service.dart';
+import 'package:user_profile/core/services/connectivity_service.dart';
+import 'package:user_profile/core/services/dio_client.dart';
+import 'package:user_profile/core/services/user_service.dart';
+import 'package:user_profile/core/providers/user_provider.dart';
+import 'package:user_profile/ui/screens/user_list_screen.dart';
+import 'package:user_profile/ui/theme/app_theme.dart';
+import 'package:user_profile/core/constants/app_strings.dart';
+import 'package:flutter/material.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('User list screen loads correctly', (WidgetTester tester) async {
+    // Setup SharedPreferences mock
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+
+    // Create services
+    final dioClient = DioClient();
+    final cacheService = CacheService(prefs: prefs);
+    final connectivityService = ConnectivityService();
+    final userService = UserService(dioClient: dioClient);
+
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(
+      ChangeNotifierProvider(
+        create: (_) => UserProvider(
+          userService: userService,
+          cacheService: cacheService,
+          connectivityService: connectivityService,
+        ),
+        child: MaterialApp(
+          title: AppStrings.appName,
+          theme: AppTheme.lightTheme,
+          home: const UserListScreen(),
+        ),
+      ),
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify that the app bar title is displayed
+    expect(find.text(AppStrings.userListTitle), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    // Verify that the search bar is present
+    expect(find.byType(TextField), findsOneWidget);
+
+    // Wait for initial loading
     await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
   });
 }
