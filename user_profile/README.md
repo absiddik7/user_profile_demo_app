@@ -83,12 +83,18 @@ lib/
    cd user_profile
    ```
 
-2. **Install dependencies**
+2. **Set up environment variables**
+   Create a `.env` file in the project root:
+   ```bash
+   API_KEY=your_reqres_api_key_here
+   ```
+
+3. **Install dependencies**
    ```bash
    flutter pub get
    ```
 
-3. **Run the application**
+4. **Run the application**
    ```bash
    flutter run
    ```
@@ -102,66 +108,40 @@ lib/
 
 ## API Reference
 
-The application integrates with the [Random User API](https://randomuser.me/) for user data:
+The application integrates with the [Reqres API](https://reqres.in/) for user data:
 
 ### Base Configuration
-- **Base URL**: `https://randomuser.me/api`
+- **Base URL**: `https://reqres.in/api`
 - **Timeout**: 30 seconds
 - **Pagination**: 10 users per page
-- **Seed**: `userprofileapp` (for consistent results)
+- **Authentication**: API Key via `x-api-key` header
 
 ### Endpoints
-- **GET** `/?page={page}&results={results}&seed={seed}`
+- **GET** `/users?page={page}&per_page={per_page}`
   - Fetch paginated user list
   - Parameters:
     - `page` (int): Page number for pagination
-    - `results` (int): Number of results per page (max 10)
-    - `seed` (string): Seed for consistent randomization
+    - `per_page` (int): Number of results per page (max 10)
 
 ### Response Format
 ```json
 {
-  "results": [
+  "page": 1,
+  "per_page": 10,
+  "total": 12,
+  "total_pages": 2,
+  "data": [
     {
-      "gender": "female",
-      "name": {
-        "title": "Ms",
-        "first": "Jane",
-        "last": "Doe"
-      },
-      "location": {
-        "street": {
-          "number": 123,
-          "name": "Main St"
-        },
-        "city": "Anytown",
-        "state": "CA",
-        "country": "USA",
-        "postcode": "12345"
-      },
-      "email": "jane.doe@example.com",
-      "login": {
-        "uuid": "unique-user-id",
-        "username": "janedoe123"
-      },
-      "dob": {
-        "date": "1990-01-01T00:00:00.000Z",
-        "age": 34
-      },
-      "phone": "(123) 456-7890",
-      "cell": "(098) 765-4321",
-      "picture": {
-        "large": "https://randomuser.me/api/portraits/women/1.jpg",
-        "medium": "https://randomuser.me/api/portraits/med/women/1.jpg",
-        "thumbnail": "https://randomuser.me/api/portraits/thumb/women/1.jpg"
-      }
+      "id": 1,
+      "email": "george.bluth@reqres.in",
+      "first_name": "George",
+      "last_name": "Bluth",
+      "avatar": "https://reqres.in/img/faces/1-image.jpg"
     }
   ],
-  "info": {
-    "seed": "userprofileapp",
-    "results": 10,
-    "page": 1,
-    "version": "1.4"
+  "support": {
+    "url": "https://reqres.in/#support-heading",
+    "text": "To keep ReqRes free, contributions towards server costs are appreciated!"
   }
 }
 ```
@@ -215,7 +195,14 @@ flutter test
 ## Configuration
 
 ### Environment Variables
-The app uses centralized configuration in `lib/core/constants/`:
+The app uses a `.env` file for sensitive configuration:
+
+```bash
+# .env
+API_KEY=your_reqres_api_key_here
+```
+
+The app also uses centralized configuration in `lib/core/constants/`:
 
 - **API Settings**: `app_constants.dart`
 - **UI Dimensions**: `app_dimensions.dart`
@@ -240,6 +227,7 @@ dependencies:
   shared_preferences: ^2.5.4
   cached_network_image: ^3.4.1
   connectivity_plus: ^7.0.0
+  flutter_dotenv: ^5.2.1
 ```
 
 ### Development Dependencies

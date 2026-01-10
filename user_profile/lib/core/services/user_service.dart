@@ -19,8 +19,7 @@ class UserService {
         AppConstants.usersEndpoint,
         queryParameters: {
           'page': page,
-          'results': perPage,
-          'seed': AppConstants.apiSeed,
+          'per_page': perPage,
         },
       );
 
@@ -31,6 +30,8 @@ class UserService {
       return UsersResponse(
         page: page,
         perPage: perPage,
+        total: 0,
+        totalPages: 0,
         users: [],
       );
     } catch (e) {
@@ -38,21 +39,17 @@ class UserService {
     }
   }
 
-  // Fetch a single user by seed and index
-  Future<UserModel?> getUserBySeed(String seed) async {
+  // Fetch a single user by ID
+  Future<UserModel?> getUserById(int id) async {
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
-        AppConstants.usersEndpoint,
-        queryParameters: {
-          'seed': seed,
-          'results': 1,
-        },
+        '${AppConstants.usersEndpoint}/$id',
       );
 
       if (response.data != null) {
-        final results = response.data!['results'] as List<dynamic>?;
-        if (results != null && results.isNotEmpty) {
-          return UserModel.fromJson(results.first as Map<String, dynamic>);
+        final data = response.data!['data'] as Map<String, dynamic>?;
+        if (data != null) {
+          return UserModel.fromJson(data);
         }
       }
 

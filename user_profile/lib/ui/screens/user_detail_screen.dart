@@ -130,10 +130,6 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
           _buildSectionTitle('Contact Information'),
           const SizedBox(height: AppDimensions.spaceL),
           _buildContactInfo(user),
-          const SizedBox(height: AppDimensions.spaceXXL),
-          _buildSectionTitle('Personal Information'),
-          const SizedBox(height: AppDimensions.spaceL),
-          _buildPersonalInfo(user),
         ],
       ),
     );
@@ -169,85 +165,18 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
           ),
           Divider(color: AppColors.divider),
           InfoRow(
-            icon: Icons.phone_outlined,
-            label: AppStrings.phone,
-            value: user.phone,
+            icon: Icons.badge_outlined,
+            label: AppStrings.firstName,
+            value: user.firstName,
             iconColor: AppColors.secondary,
           ),
-          if (user.cell.isNotEmpty) ...[
-            Divider(color: AppColors.divider),
-            InfoRow(
-              icon: Icons.phone_android_outlined,
-              label: 'Cell',
-              value: user.cell,
-              iconColor: AppColors.secondary,
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  // Build personal information section
-  Widget _buildPersonalInfo(UserModel user) {
-    return Container(
-      padding: const EdgeInsets.all(AppDimensions.paddingL),
-      decoration: BoxDecoration(
-        color: AppColors.cardBackground,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.cardShadow,
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+          Divider(color: AppColors.divider),
+          InfoRow(
+            icon: Icons.badge_outlined,
+            label: AppStrings.lastName,
+            value: user.lastName,
+            iconColor: AppColors.secondary,
           ),
-        ],
-      ),
-      child: Column(
-        children: [
-          if (user.gender.isNotEmpty)
-            InfoRow(
-              icon: Icons.person_outline,
-              label: 'Gender',
-              value: user.gender[0].toUpperCase() + user.gender.substring(1),
-              iconColor: AppColors.accent,
-            ),
-          if (user.age != null) ...[
-            Divider(color: AppColors.divider),
-            InfoRow(
-              icon: Icons.cake_outlined,
-              label: 'Age',
-              value: '${user.age} years',
-              iconColor: AppColors.accent,
-            ),
-          ],
-          if (user.city.isNotEmpty) ...[
-            Divider(color: AppColors.divider),
-            InfoRow(
-              icon: Icons.location_city_outlined,
-              label: 'City',
-              value: user.city,
-              iconColor: AppColors.accent,
-            ),
-          ],
-          if (user.state.isNotEmpty) ...[
-            Divider(color: AppColors.divider),
-            InfoRow(
-              icon: Icons.map_outlined,
-              label: 'State',
-              value: user.state,
-              iconColor: AppColors.accent,
-            ),
-          ],
-          if (user.country.isNotEmpty) ...[
-            Divider(color: AppColors.divider),
-            InfoRow(
-              icon: Icons.flag_outlined,
-              label: 'Country',
-              value: user.country,
-              iconColor: AppColors.accent,
-            ),
-          ],
         ],
       ),
     );

@@ -100,7 +100,7 @@ class UserProvider extends ChangeNotifier {
         _users = [..._users, ...response.users];
       }
 
-      _hasMorePages = response.users.isNotEmpty;
+      _hasMorePages = response.hasMorePages;
       _currentPage++;
 
       // Cache the users

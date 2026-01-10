@@ -42,6 +42,7 @@ class DioClient {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'x-api-key': AppConstants.apiKey,
         },
       ),
     );
@@ -50,6 +51,8 @@ class DioClient {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
+          // Ensure API key is always set (in case it was loaded after init)
+          options.headers['x-api-key'] = AppConstants.apiKey;
           _logRequest(options);
           return handler.next(options);
         },

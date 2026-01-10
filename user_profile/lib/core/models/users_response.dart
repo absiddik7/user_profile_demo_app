@@ -3,27 +3,29 @@ import 'user_model.dart';
 class UsersResponse {
   final int page;
   final int perPage;
-  final String seed;
+  final int total;
+  final int totalPages;
   final List<UserModel> users;
 
   UsersResponse({
     required this.page,
     required this.perPage,
+    required this.total,
+    required this.totalPages,
     required this.users,
-    this.seed = '',
   });
 
-  bool get hasMorePages => users.isNotEmpty;
+  bool get hasMorePages => page < totalPages;
 
   factory UsersResponse.fromJson(Map<String, dynamic> json) {
-    final info = json['info'] as Map<String, dynamic>? ?? {};
-    final results = json['results'] as List<dynamic>? ?? [];
+    final data = json['data'] as List<dynamic>? ?? [];
 
     return UsersResponse(
-      page: info['page'] as int? ?? 1,
-      perPage: info['results'] as int? ?? 10,
-      seed: info['seed'] as String? ?? '',
-      users: results
+      page: json['page'] as int? ?? 1,
+      perPage: json['per_page'] as int? ?? 10,
+      total: json['total'] as int? ?? 0,
+      totalPages: json['total_pages'] as int? ?? 0,
+      users: data
           .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -32,17 +34,16 @@ class UsersResponse {
   // Convert UsersResponse to JSON
   Map<String, dynamic> toJson() {
     return {
-      'info': {
-        'page': page,
-        'results': perPage,
-        'seed': seed,
-      },
-      'results': users.map((e) => e.toJson()).toList(),
+      'page': page,
+      'per_page': perPage,
+      'total': total,
+      'total_pages': totalPages,
+      'data': users.map((e) => e.toJson()).toList(),
     };
   }
 
   @override
   String toString() {
-    return 'UsersResponse(page: $page, perPage: $perPage, seed: $seed, users: ${users.length})';
+    return 'UsersResponse(page: $page, perPage: $perPage, total: $total, totalPages: $totalPages, users: ${users.length})';
   }
 }
